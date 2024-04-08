@@ -1,4 +1,5 @@
 const { db } = require('@vercel/postgres');
+const path = require("path");
 const {
   invoices,
   customers,
@@ -6,6 +7,8 @@ const {
   users,
 } = require('../app/lib/placeholder-data.js');
 const bcrypt = require('bcrypt');
+require("dotenv").config({ path: path.join(process.cwd(), ".env.local") });
+
 
 async function seedUsers(client) {
   try {
@@ -161,6 +164,11 @@ async function seedRevenue(client) {
 }
 
 async function main() {
+
+  console.log({
+    POSTGRES_URL: process.env.POSTGRES_URL,
+    POSTGRES_URL_NON_POOLING: process.env.POSTGRES_URL_NON_POOLING
+});
   const client = await db.connect();
 
   await seedUsers(client);
